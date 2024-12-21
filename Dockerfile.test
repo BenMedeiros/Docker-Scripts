@@ -1,0 +1,10 @@
+FROM base-image
+
+# Set environment variables
+ENV DATABASE_URL=mysql://user:password@host:3306/dbname
+ENV API_KEY=abcdef12345
+
+# Other instructions
+COPY my-app /usr/src/my-app
+WORKDIR /usr/src/my-app
+CMD ["python", "app.py"]
