@@ -30,3 +30,16 @@ docker events
 
 rem Build container using Dockerfile
 docker build -t my-image -f ./dockerfiles/MyDockerfile .
+
+
+
+rem Create a new volume
+docker volume create dummy-volume-1
+rem add volume mount
+docker run -d --name mysql-withadditionalmount --mount source=dummy-volume-1,target=/var/log -e "MYSQL_ROOT_PASSWORD=pass1" -e "MYSQL_DATABASE=my-database-101" -e "MYSQL_USER=ben-db" -e "MYSQL_PASSWORD=ben-db" -p 3308:3306 mysql:latest
+
+rem mysql image using existing mysql volume data
+docker run -d --name mysql-withvolume -v dummy-volume-1:/var/lib/mysql -e "MYSQL_ROOT_PASSWORD=pass1" -p 3309:3306 mysql:latest
+
+rem mysql dump to mounted volume
+mysqldump --all-databases -u root -p  > /var/log/mysqldump.sql
